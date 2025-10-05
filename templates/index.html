@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruit & Vegetable Classifier</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #FFC107;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-color: #333;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+            color: var(--text-color);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            max-width: 500px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Hides the default file input */
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Styles the custom "Choose File" label */
+        .upload-label {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #f0f0f0;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 80%;
+        }
+
+        .upload-label:hover {
+            border-color: var(--primary-color);
+            background-color: #e6f7e7;
+        }
+        
+        #filename {
+            color: #555;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        button[type="submit"] {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(45deg, var(--primary-color), #81C784);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6);
+        }
+
+        .result-container {
+            margin-top: 30px;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .result-image {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+            border-radius: 15px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .result p {
+            font-size: 1.2em;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f1f8e9;
+            border-left: 5px solid var(--primary-color);
+            border-radius: 5px;
+        }
+        
+        .result p strong {
+            color: var(--primary-color);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍎 Fruit & Vegetable Classifier 🥦</h1>
+        <form action="/predict" method="post" enctype="multipart/form-data">
+            
+            <label for="image-upload" class="upload-label">
+                Click to Upload Image
+                <div id="filename">No file selected</div>
+            </label>
+            <input type="file" name="image" id="image-upload" required>
+            
+            <button type="submit">Classify Image</button>
+        </form>
+
+        {% if image %}
+        <div class="result-container">
+            <img src="{{ image }}" alt="Uploaded Image" class="result-image">
+            <div class="result">
+                <p><strong>Prediction:</strong> {{ label }}</p>
+                <p><strong>Confidence:</strong> {{ '%.2f'|format(accuracy) }}%</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('image-upload');
+        const filenameDisplay = document.getElementById('filename');
+        
+        fileInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                filenameDisplay.textContent = this.files[0].name;
+            } else {
+                filenameDisplay.textContent = 'No file selected';
+            }
+        });
+    </script>
+</body>
+</html>
