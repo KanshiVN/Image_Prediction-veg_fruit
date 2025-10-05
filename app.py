@@ -7,7 +7,7 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-model = load_model(r'C:\Users\HP\Desktop\DEEP learning\Image_classify.keras')
+model = load_model('Image_classify.keras')
 
 data_cat = ['apple','banana','beetroot','bell pepper','cabbage','capsicum',
              'carrot','cauliflower','chilli pepper','corn','cucumber','eggplant',
