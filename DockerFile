@@ -1,0 +1,18 @@
+# Start with an official TensorFlow base image
+FROM tensorflow/tensorflow:latest
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the requirements file and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of your application files into the container
+COPY . .
+
+# Tell Hugging Face which port your Flask app is running on
+EXPOSE 7860
+
+# The command to start your Flask app
+CMD ["flask", "run", "--host", "0.0.0.0", "--port", "7860"]
